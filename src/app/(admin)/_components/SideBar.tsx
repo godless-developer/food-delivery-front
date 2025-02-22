@@ -1,9 +1,10 @@
 import { LayoutDashboard, Settings, Truck } from "lucide-react";
+import Link from "next/link";
 
 export default function SideBar() {
   return (
-    <div className="flex flex-col gap-20 py-8 px-6 bg-[#f4f4f5] w-[255px]">
-      <div className="flex items-center gap-3">
+    <div className="flex flex-col gap-20 py-8 px-6 bg-white  h-screen w-[255px] fixed">
+      <Link href={"/admin"} className="flex items-center gap-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="46"
@@ -27,20 +28,31 @@ export default function SideBar() {
             Swift delivery
           </p>
         </div>
-      </div>
+      </Link>
       <div className="gap-7 flex flex-col">
-        <button className="bg-[#ef4444] py-3 rounded-full flex justify-center items-center gap-3 text-[14px] font-semibold normal text-black">
+        <Link
+          href={"/admin/foodmenu"}
+          className="  bg-[#f4f4f5] py-3 rounded-full flex justify-center  focus:bg-black focus:text-white items-center gap-4 text-[14px] font-semibold normal text-black"
+        >
           <LayoutDashboard />
           <p>Food menu</p>
-        </button>
-        <button className="bg-[#ef4444] py-3 rounded-full flex justify-center items-center gap-4 text-[14px] font-semibold normal text-black">
+        </Link>
+
+        <Link
+          href={"/admin/orders"}
+          className="  bg-[#f4f4f5] py-3 rounded-full flex justify-center  focus:bg-black focus:text-white items-center gap-4 text-[14px] font-semibold normal text-black"
+        >
           <Truck />
           <p>Orders</p>
-        </button>
-        <button className="bg-[#ef4444] py-3 rounded-full flex justify-center items-center gap-3 text-[14px] font-semibold normal text-black">
+        </Link>
+
+        <Link
+          href={"/admin/settings"}
+          className=" bg-[#f4f4f5] py-3 rounded-full flex justify-center focus:bg-black focus:text-white items-center gap-3 text-[14px] font-semibold normal text-black"
+        >
           <Settings />
           <p>Settings</p>
-        </button>
+        </Link>
       </div>
     </div>
   );

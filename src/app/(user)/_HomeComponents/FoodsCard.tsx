@@ -12,7 +12,7 @@ export default function FoodsCard({
   imgUrl,
 }: FoodsCardProps) {
   return (
-    <div className="w-[397px] h-[342px] border-[2px] bg-white rounded-xl flex flex-col  gap-5 items-center justify-between p-4">
+    <div className="w-[291px] h-[261px] border-[2px] bg-white rounded-xl flex flex-col  gap-5 items-center justify-between p-3">
       <div
         className="rounded-xl w-full h-[200px] border-[2px] border-[#ef4444] flex justify-end items-end p-4"
         style={{

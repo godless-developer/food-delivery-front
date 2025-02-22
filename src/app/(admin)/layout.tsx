@@ -1,4 +1,4 @@
-import DishesCategory from "./_components/DishesCategory";
+import DishesCategory from "./admin/foodmenu/DishesCategory";
 import SideBar from "./_components/SideBar";
 
 export default function RootLayout({
@@ -7,12 +7,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex h-screen w-full bg-[#f4f4f5]">
       <SideBar />
-      <div className="flex flex-col w-full">
-        <DishesCategory />
-        {children}
-      </div>
+      {children}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import FoodMenu from "./FoodMenu";
 
 export default function FoodMenuA() {
   return (
-    <div className="w-[70%] ml-[320px] rounded-xl cursor-default bg-[#f4f4f5] flex flex-col items-start justify-start">
+    <div className="w-full pl-[320px] rounded-xl cursor-default bg-[#f4f4f5] flex flex-col items-start justify-start">
       <DishesCategory />
       <FoodMenu />
     </div>

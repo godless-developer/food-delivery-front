@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function SideBar() {
   return (
-    <div className="flex flex-col gap-20 py-8 px-6 bg-white  h-screen w-[255px] fixed">
+    <div className="flex flex-col gap-16 py-8 px-6 bg-white  h-screen w-[255px] fixed">
       <Link href={"/admin"} className="flex items-center gap-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"

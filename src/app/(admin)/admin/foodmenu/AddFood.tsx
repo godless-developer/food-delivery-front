@@ -1,5 +1,5 @@
-import { PopoverDemo } from "./Popover";
+import { DialogDemo } from "@/app/shadcn/Dialog";
 
 export default function AddFood() {
-  return <PopoverDemo />;
+  return <DialogDemo />;
 }

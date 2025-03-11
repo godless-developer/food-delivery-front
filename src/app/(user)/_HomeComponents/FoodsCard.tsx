@@ -12,13 +12,13 @@ export default function FoodsCard({
   imgUrl,
 }: FoodsCardProps) {
   return (
-    <div className="w-[291px] h-[261px] border-[2px] bg-white rounded-xl flex flex-col  gap-5 items-center justify-between p-3">
+    <div className="w-[291px] h-[261px] border-[2px] bg-white rounded-xl flex flex-col  gap-2 items-center justify-between p-3">
       <div
         className="rounded-xl w-full h-[200px] border-[2px] border-[#ef4444] flex justify-end items-end p-4"
         style={{
           backgroundImage: `${imgUrl}`,
           backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
@@ -26,9 +26,9 @@ export default function FoodsCard({
           +
         </button>
       </div>
-      <div>
+      <div className="flex flex-col gap-1">
         <div className="flex justify-between items-center">
-          <h1 className="text-[24px] font-semibold normal text-[#ef4444]">
+          <h1 className="text-[18px] font-semibold normal text-[#ef4444]">
             {title}
           </h1>
           <h1 className="text-[18px] font-semibold normal">{price}</h1>

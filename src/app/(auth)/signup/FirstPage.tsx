@@ -2,7 +2,7 @@ import { ChevronLeft } from "lucide-react";
 
 export default function FirstPage() {
   return (
-    <div className="bg-white w-[416px] h-[308px] p-1 flex flex-col gap-4">
+    <div className="bg-white w-[416px] h-[308px] p-1 flex flex-col gap-4 rounded-lg">
       <button className="flex justify-center items-center rounded-md bg-[#f5f5f7] w-[44px] h-11 border-[1px] border-[#d4d4d6]">
         <ChevronLeft />
       </button>

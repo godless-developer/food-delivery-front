@@ -12,7 +12,7 @@ export default function Orders() {
         <div className="flex bg-white w-full h-[76px] justify-between px-6 items-center">
           <div>
             <p className="text-[23px] font-extrabold">Orders</p>
-            <p className="text-[#4e4e4e]">32 items</p>
+            <p className="text-[#4e4e4e]">2 items</p>
           </div>
           <div className="flex gap-4">
             <div className="flex gap-2 bg-slate-50 pl-4 pr-20 justify-center items-center py-1 rounded-full border-[1px] border-[#f4f4f5]">

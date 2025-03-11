@@ -1,3 +1,4 @@
+import HeaderHome from "../(auth)/_components/HeaderHome";
 import Header from "./_HomeComponents/Header";
 
 export default function RootLayout({
@@ -7,7 +8,7 @@ export default function RootLayout({
 }>) {
   return (
     <div>
-      <Header />
+      <HeaderHome />
       {children}
     </div>
   );

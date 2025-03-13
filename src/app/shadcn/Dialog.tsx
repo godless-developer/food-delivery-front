@@ -19,6 +19,7 @@ export function DialogDemo() {
       setImageUrl(URL.createObjectURL(file));
     }
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>

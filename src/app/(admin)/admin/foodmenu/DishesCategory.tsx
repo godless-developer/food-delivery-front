@@ -22,10 +22,12 @@ import { useEffect, useState } from "react";
 export default function DishesCategory() {
   const [categories, setCategories] = useState<any[]>([]);
   const [value, setValue] = useState("");
+  const [open, setOpen] = useState(false);
 
   const getCategories = async () => {
     const data = await fetch("http://localhost:4000/categories");
     const jsonData = await data.json();
+    console.log(jsonData);
     setCategories(jsonData.data);
   };
 
@@ -53,17 +55,13 @@ export default function DishesCategory() {
   };
 
   const deleteCategory = async (categoryId: string) => {
-    const data = await fetch(`http://localhost:4000/categories/${categoryId}`, {
+    await fetch(`http://localhost:4000/categories/${categoryId}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ categoryName: categoryId }),
     });
-
-    if (data.ok) {
-      setCategories((prevCategories) =>
-        prevCategories.filter((category) => category.id !== categoryId)
-      );
-    } else {
-      alert("Amjiltgvi delete");
-    }
     getCategories();
   };
 
@@ -72,7 +70,7 @@ export default function DishesCategory() {
       alert("Name oruulna uu");
       return;
     }
-
+    setOpen(false);
     createCategory(value);
   };
 
@@ -81,6 +79,15 @@ export default function DishesCategory() {
       <div className="h-[230px] bg-white rounded-xl gap-8 justify-center w-full flex flex-col mt-20 px-10 py-5">
         <h1 className="text-[24px] font-medium">Dishes category</h1>
         <div className="flex gap-4 flex-wrap">
+          <div
+            className="flex justify-center gap-2 items-center bg-[#f4f4f5]
+                    px-1 rounded-full border-[1px] border-black w-[170px] h-[40px]"
+          >
+            <p>All Dishes</p>
+            <div className="flex justify-center items-center bg-black w-6 h-6 text-white rounded-full">
+              <p>0</p>
+            </div>
+          </div>
           {categories?.map((item: any, index: any) => (
             <ContextMenu key={index}>
               <ContextMenuTrigger
@@ -89,23 +96,23 @@ export default function DishesCategory() {
               >
                 <p>{item.categoryName}</p>
                 <div className="flex justify-center items-center bg-black w-6 h-6 text-white rounded-full">
-                  <p>6</p>
+                  <p>0</p>
                 </div>
               </ContextMenuTrigger>
               <ContextMenuContent className="w-64">
-                <ContextMenuItem inset onClick={() => deleteCategory(item.id)}>
-                  delete
+                {/* <ContextMenuItem>
+                  Edit
                   <ContextMenuShortcut>⌘[</ContextMenuShortcut>
-                </ContextMenuItem>
-                <ContextMenuItem inset>
-                  Forward
+                </ContextMenuItem> */}
+                <ContextMenuItem onClick={() => deleteCategory(item._id)}>
+                  Delete
                   <ContextMenuShortcut>⌘]</ContextMenuShortcut>
                 </ContextMenuItem>
               </ContextMenuContent>
             </ContextMenu>
           ))}
 
-          <Dialog>
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button
                 variant="outline"

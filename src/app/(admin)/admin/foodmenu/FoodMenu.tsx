@@ -34,10 +34,9 @@ export default function FoodMenu() {
       {categories?.map((item: any, index: any) => {
         return (
           <OneCategoryFoods
-            // categoryName={categories}
+            categories={categories}
             key={index}
             category={item}
-            foodsInfo={foodsInfo}
           />
         );
       })}

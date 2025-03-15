@@ -1,5 +1,5 @@
 "use client";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -17,14 +17,14 @@ import {
 } from "@/components/ui/select";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { FoodType } from "@/types";
 
 interface FoodsCardProps {
   title: string;
   price: string;
   paragraph: string;
-  imgUrl: string;
-  // category: any;
-  // categoryName: any;
+  imgUrl: any;
+  categoryName: any[];
 }
 
 export default function FoodsCard({
@@ -32,24 +32,12 @@ export default function FoodsCard({
   price,
   paragraph,
   imgUrl,
-}: // category,
-// categoryName,
-FoodsCardProps) {
+  categoryName,
+}: FoodsCardProps) {
   const [file, setFile] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<any>(null);
+  const [foods, setFoods] = useState<FoodType[] | null>(null);
 
-  const [categories, setCategories] = useState<any[]>([]);
-
-  const getCategories = async () => {
-    const data = await fetch("http://localhost:4000/categories");
-    const jsonData = await data.json();
-    console.log(jsonData);
-    setCategories(jsonData.data);
-  };
-
-  useEffect(() => {
-    getCategories();
-  }, []);
   const onFileUpload = (event: any) => {
     const file = event.target.files[0];
     if (file) {
@@ -57,12 +45,44 @@ FoodsCardProps) {
       setImageUrl(URL.createObjectURL(file));
     }
   };
+
+  const getFoods = async () => {
+    try {
+      const data = await fetch(`http://localhost:5000/foodsInfo`);
+      const jsonData = await data.json();
+      setFoods(jsonData.getFood);
+    } catch (error) {
+      console.log("Error", error);
+      alert("Error in getFoods");
+    }
+  };
+
+  useEffect(() => {
+    getFoods();
+  }, []);
+
+  const deleteFood = async (foodId: string) => {
+    try {
+      const response = await fetch(`http://localhost:5000/food/${foodId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
+      getFoods();
+    } catch (error) {
+      console.log("Error", error);
+      alert("Error in deleteFoods");
+    }
+  };
+
   return (
     <div className="w-[291px] h-[261px] border-[2px] bg-white rounded-xl flex flex-col  gap-2 items-center justify-between p-3">
       <div
         className="rounded-xl w-full h-[200px] border-[2px] border-[#ef4444] flex justify-end items-end p-4"
         style={{
-          backgroundImage: `${imgUrl}`,
+          backgroundImage: `url${imgUrl}`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -93,7 +113,7 @@ FoodsCardProps) {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Categories</SelectLabel>
-                    {categories.map((item: any, index: any) => {
+                    {categoryName?.map((item: any, index: any) => {
                       return (
                         <SelectItem value={index} key={index}>
                           {item.categoryName}
@@ -164,6 +184,17 @@ FoodsCardProps) {
                   )}
                 </label>
               </div>
+            </div>
+            <div className="flex justify-between">
+              <button
+                onClick={() => deleteFood(response?._id)}
+                className="border-[1.5px] px-3 py-1 border-red-600 rounded-lg"
+              >
+                <Trash2 color="red" strokeWidth={1.75} width={18} />
+              </button>
+              <button className="border-[1.5px] bg-black text-white px-3 py-1 rounded-lg">
+                Save changes
+              </button>
             </div>
           </DialogContent>
         </Dialog>

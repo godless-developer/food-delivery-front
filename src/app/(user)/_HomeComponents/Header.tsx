@@ -45,15 +45,3 @@ export default function Header() {
     </div>
   );
 }
-
-{
-  /* <div className=" flex items-center justify-center rounded-full bg-white w-[251px] h-[36px] px-3 py-2">
-            <p>Add location</p>
-          </div>
-          <div className="flex items-center justify-center w-[36px] h-[36px] bg-white rounded-full">
-            <p>shop</p>
-          </div>
-          <div className="flex items-center justify-center w-[36px] h-[36px] bg-[#EF4444] rounded-full">
-            <p>Profile</p>
-          </div> */
-}

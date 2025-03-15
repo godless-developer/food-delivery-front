@@ -1,3 +1,8 @@
-export type Food = {
+export type FoodType = {
   foodName: string;
+  category: string;
+  price: number;
+  ingredients: string;
+  _id: string;
+  value: string;
 };

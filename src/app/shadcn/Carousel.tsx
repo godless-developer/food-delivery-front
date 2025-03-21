@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import {
   Carousel,
   CarouselContent,
@@ -8,24 +6,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const Arrays = [
-  { num: "Appetizers" },
-  { num: "Salads" },
-  { num: "Pizzas" },
-  { num: "Lunch favorites" },
-  { num: "Main dishes" },
-  { num: "Fish & Sea foods" },
-  { num: "Side dish" },
-  { num: "Brunch" },
-  { num: "Desserts" },
-  { num: "Tsuiwan" },
-  { num: "Tsuiwan" },
-  { num: "Tsuiwan" },
-  { num: "Tsuiwan" },
-  { num: "Tsuiwan" },
-  { num: "Tsuiwan" },
-];
-export function CarouselSize() {
+export async function CarouselSize() {
+  const data = await fetch("https://localhost:4000/categories");
+  const jsonData = await data.json();
+  console.log(data);
+  console.log(jsonData);
   return (
     <Carousel
       opts={{
@@ -34,13 +19,13 @@ export function CarouselSize() {
       className="w-[95%]"
     >
       <CarouselContent>
-        {Arrays.map((item, index) => (
+        {/* {data.map((item, index) => (
           <CarouselItem key={index} className="basis-1/9">
             <div className="h-9 w-full flex justify-center px-7 items-center text-white bg-black rounded-full">
               {item.num}
             </div>
           </CarouselItem>
-        ))}
+        ))} */}
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />

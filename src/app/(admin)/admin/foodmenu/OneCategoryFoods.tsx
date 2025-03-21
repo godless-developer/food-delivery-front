@@ -21,6 +21,34 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import { ImageIcon, X } from "lucide-react";
+
+const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!;
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
+const uploadImage = async (file: File | null) => {
+  if (!file) {
+    return null;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", UPLOAD_PRESET);
+
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const result = await response.json();
+    return result.secure_url;
+  } catch (error: unknown) {
+    return { error: "failed to upload image" };
+  }
+};
 
 const formSchema = z.object({
   foodName: z.string().min(2, {
@@ -32,6 +60,7 @@ const formSchema = z.object({
   ingredients: z.string().min(1, {
     message: "Ingredients cannot be empty.",
   }),
+  image: z.string().nonempty("zurgaa orullna uu"),
 });
 
 interface AppetizersProps {
@@ -46,7 +75,7 @@ export default function OneCategoryFoods({
   const [foodInfo, setFoodInfo] = useState<any[]>([]);
   const [value, setValue] = useState("");
   const [file, setFile] = useState<any>(null);
-  const [imageUrl, setImageUrl] = useState<any>(null);
+  const [foodImg, setFoodImg] = useState<any>(null);
   const [open, setOpen] = useState(false);
 
   const form = useForm({
@@ -57,7 +86,7 @@ export default function OneCategoryFoods({
     const file = event.target.files[0];
     if (file) {
       setFile(file);
-      setImageUrl(URL.createObjectURL(file));
+      setFoodImg(URL.createObjectURL(file));
     }
   };
 
@@ -72,6 +101,8 @@ export default function OneCategoryFoods({
   }, []);
 
   const createFoodInfo = async (value: FoodType) => {
+    const imageUrl = await uploadImage(file);
+
     const data = await fetch("http://localhost:4000/foodsInfo", {
       method: "POST",
       headers: {
@@ -82,7 +113,7 @@ export default function OneCategoryFoods({
         foodPrice: value.price,
         foodDescription: value.ingredients,
         category: category,
-        imgUrl: imageUrl,
+        foodImg: imageUrl,
       }),
     });
 
@@ -96,26 +127,24 @@ export default function OneCategoryFoods({
     getFoodsInfo();
   };
 
-  const deleteFoodsInfo = async (value: FoodType) => {
-    await fetch(`http://localhost:4000/foodsInfo`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        foodName: value.foodName,
-        foodPrice: value.price,
-        foodDescription: value.ingredients,
-        category: category,
-        imgUrl: imageUrl,
-      }),
-    });
-    getFoodsInfo();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+
+    if (!file) {
+      return;
+    }
+
+    setFile(file);
+
+    const temImageUrl = URL.createObjectURL(file);
+    setFoodImg(temImageUrl);
+    form.setValue("image", "uploaded");
   };
 
   const onSubmit = (food: any) => {
     createFoodInfo(food);
     setOpen(false);
+    form.reset();
   };
 
   return (
@@ -212,57 +241,60 @@ export default function OneCategoryFoods({
                     )}
                   />
                 </div>
-                <div>
-                  <div className="mt-1 flex gap-1">
-                    <label
-                      htmlFor="file-input"
-                      className="text-[14px] font-semibold ml-2 flex flex-col"
-                    >
-                      Food image
-                    </label>
-                  </div>
-                  <div className="flex flex-col mt-1 mb-5">
-                    <label
-                      htmlFor="file-input"
-                      className="bg-gray-100 rounded-xl w-full h-[150px] flex flex-col justify-center items-center cursor-pointer border-[1px] border-gray"
-                    >
-                      <input
-                        hidden
-                        type="file"
-                        id="file-input"
-                        onChange={onFileUpload}
-                      />
-                      {!imageUrl ? (
-                        <div className="flex flex-col justify-center items-center gap-2">
-                          <div className="w-10 h-10 bg-white rounded-full flex justify-center items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="18"
-                              height="18"
-                              viewBox="0 0 12 12"
-                              fill="none"
+                <div className="h-[160px] w-full flex flex-col gap-2 ">
+                  <h4 className="text-[14px] font-[500] leading-[14px] ">
+                    Food image
+                  </h4>
+                  <FormField
+                    control={form.control}
+                    name="image"
+                    render={({ field: { onChange, value, ...rest } }) => (
+                      <FormItem>
+                        <FormControl>
+                          {foodImg ? (
+                            <div className="w-full h-full relative ">
+                              <div className="h-[138px]">
+                                <Image
+                                  alt="file-input"
+                                  src={foodImg}
+                                  width={1000}
+                                  height={1000}
+                                  className={
+                                    "size-full object-cover rounded-md border border-dashed border-blue-500/20 bg-blue-500/5 bg-cover bg-no-repeat bg-center"
+                                  }
+                                />
+                              </div>
+                              <Button
+                                // onClick={deleteImage}
+                                className="absolute top-2 right-2 rounded-full w-9 h-9  "
+                              >
+                                <X />
+                              </Button>
+                            </div>
+                          ) : (
+                            <label
+                              htmlFor="file-input"
+                              className={`flex flex-col h-[138px] items-center justify-center cursor-pointer gap-2 p-4  rounded-md border border-dashed border-blue-500/20 bg-blue-500/5 `}
                             >
-                              <path
-                                d="M9.5 2.5V9.5H2.5V2.5H9.5ZM9.5 1.5H2.5C1.95 1.5 1.5 1.95 1.5 2.5V9.5C1.5 10.05 1.95 10.5 2.5 10.5H9.5C10.05 10.5 10.5 10.05 10.5 9.5V2.5C10.5 1.95 10.05 1.5 9.5 1.5ZM7.07 5.93L5.57 7.865L4.5 6.57L3 8.5H9L7.07 5.93Z"
-                                fill="#202124"
+                              <div className="p-2 bg-[#fff] rounded-full">
+                                <ImageIcon className=" w-4 h-4 " />{" "}
+                              </div>
+                              Choose a file or drag & drop it here
+                              <Input
+                                id="file-input"
+                                type="file"
+                                {...rest}
+                                onChange={handleChange}
+                                className="hidden"
                               />
-                            </svg>
-                          </div>
-                          <span>Choose a file or drag & drop it here</span>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col justify-center items-center h-[150px] w-full gap-2">
-                          <Image
-                            src={imageUrl}
-                            alt="Uploaded"
-                            width={1000}
-                            height={1000}
-                            className="object-cover size-full rounded-lg bg-cover bg-no-repeat bg-center"
-                          />
-                        </div>
-                      )}
-                    </label>
-                  </div>
+                            </label>
+                          )}
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <div className="w-full pt-6 flex items-center justify-end">
                   <Button type="submit">Add Dish</Button>
@@ -275,13 +307,14 @@ export default function OneCategoryFoods({
           .filter((food) => food.category == category._id)
           .map((item: any, index: any) => (
             <FoodsCard
-              onClick={deleteFoodsInfo}
+              foodId={item._id}
               categoryName={categories}
               key={index}
               title={item.foodName}
               price={item.foodPrice}
               paragraph={item.foodDescription}
-              imgUrl={item.imgUrl}
+              foodImg={item.foodImg}
+              getFoodsInfo={getFoodsInfo}
             />
           ))}
       </div>

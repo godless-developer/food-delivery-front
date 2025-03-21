@@ -23,20 +23,24 @@ interface FoodsCardProps {
   title: string;
   price: string;
   paragraph: string;
-  imgUrl: any;
+  foodImg: string;
   categoryName: any[];
+  foodId: string;
+  getFoodsInfo: any;
 }
 
 export default function FoodsCard({
   title,
   price,
   paragraph,
-  imgUrl,
+  foodImg,
   categoryName,
+  foodId,
+  getFoodsInfo,
 }: FoodsCardProps) {
   const [file, setFile] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<any>(null);
-  const [foods, setFoods] = useState<FoodType[] | null>(null);
+  const [open, setOpen] = useState(false);
 
   const onFileUpload = (event: any) => {
     const file = event.target.files[0];
@@ -46,35 +50,20 @@ export default function FoodsCard({
     }
   };
 
-  const getFoods = async () => {
-    try {
-      const data = await fetch(`http://localhost:5000/foodsInfo`);
-      const jsonData = await data.json();
-      setFoods(jsonData.getFood);
-    } catch (error) {
-      console.log("Error", error);
-      alert("Error in getFoods");
-    }
-  };
-
-  useEffect(() => {
-    getFoods();
-  }, []);
-
   const deleteFood = async (foodId: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/food/${foodId}`, {
+      await fetch(`http://localhost:4000/foodsInfo/${foodId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log(response);
-      getFoods();
     } catch (error) {
       console.log("Error", error);
       alert("Error in deleteFoods");
     }
+    getFoodsInfo();
+    setOpen(false);
   };
 
   return (
@@ -82,13 +71,13 @@ export default function FoodsCard({
       <div
         className="rounded-xl w-full h-[200px] border-[2px] border-[#ef4444] flex justify-end items-end p-4"
         style={{
-          backgroundImage: `url${imgUrl}`,
+          backgroundImage: `url(${foodImg})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <button className="w-11 h-11 flex rounded-full border-[2px] justify-center items-center bg-white">
               <Pencil size={20} color="#ef4444" />
@@ -187,7 +176,7 @@ export default function FoodsCard({
             </div>
             <div className="flex justify-between">
               <button
-                onClick={() => deleteFood(response?._id)}
+                onClick={() => deleteFood(foodId)}
                 className="border-[1.5px] px-3 py-1 border-red-600 rounded-lg"
               >
                 <Trash2 color="red" strokeWidth={1.75} width={18} />

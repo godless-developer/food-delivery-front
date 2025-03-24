@@ -1,29 +1,30 @@
+"use client";
+import { useEffect } from "react";
+
+import { useCategories } from "@/app/_context/CategoriesContext";
 import Ads from "../_HomeComponents/Ads";
-import Appetizers from "../_HomeComponents/Appetizers";
 import Catagories from "../_HomeComponents/Categories";
+import OneCategoryFronts from "../_HomeComponents/OneCategoryFront";
 import Footer from "../_HomeComponents/Footer";
 
-const Dishes = [
-  { type: "Appetizers" },
-  { type: "Salads" },
-  { type: "Pizzas" },
-  { type: "Lunch favorites" },
-  { type: "Main dishes" },
-  { type: "Fish & Sea foods" },
-  { type: "Brunch" },
-  { type: "Side dish" },
-  { type: "Dessert" },
-  { type: "Beverages" },
-];
-
 export default function Homepage() {
+  const { categories, getCategories } = useCategories();
+  useEffect(() => {
+    getCategories();
+  }, []);
   return (
     <div>
       <Ads />
       <div className="flex flex-col items-start py-8 px-12 gap-9">
         <Catagories />
-        {Dishes.map((item, index) => {
-          return <Appetizers key={index} catoName={item.type} />;
+        {categories.map((item: any, index) => {
+          return (
+            <OneCategoryFronts
+              key={index}
+              catoName={item.categoryName}
+              categoryId={item._id}
+            />
+          );
         })}
       </div>
       <Footer />

@@ -18,19 +18,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
+import { useCategories } from "@/app/_context/CategoriesContext";
 
 export default function DishesCategory() {
-  const [categories, setCategories] = useState<any[]>([]);
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
 
-  const getCategories = async () => {
-    const data = await fetch("http://localhost:4000/categories");
-    const jsonData = await data.json();
-    console.log(jsonData);
-    setCategories(jsonData.data);
-  };
-
+  const { categories, getCategories } = useCategories();
   useEffect(() => {
     getCategories();
   }, []);
@@ -44,13 +38,13 @@ export default function DishesCategory() {
       body: JSON.stringify({ categoryName: value }),
     });
 
-    if (data.ok) {
-      const jsonData = await data.json();
-      setCategories((prevCategories) => [...prevCategories, jsonData]);
-      setValue("");
-    } else {
-      alert("Nemelt amjiltgvi");
-    }
+    // if (data.ok) {
+    //   const jsonData = await data.json();
+    //   setCategories((prevCategories) => [...prevCategories, jsonData]);
+    //   setValue("");
+    // } else {
+    //   alert("Nemelt amjiltgvi");
+    // }
     getCategories();
   };
 

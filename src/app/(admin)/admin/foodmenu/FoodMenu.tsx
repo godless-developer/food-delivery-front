@@ -1,21 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import OneCategoryFoods from "./OneCategoryFoods";
+import { useCategories } from "@/app/_context/CategoriesContext";
 
 export default function FoodMenu() {
-  const [categories, setCategories] = useState<any[]>([]);
-
-  const getCategories = async () => {
-    const data = await fetch("http://localhost:4000/categories");
-    const jsonData = await data.json();
-    console.log(jsonData);
-    setCategories(jsonData.data);
-  };
-
-  useEffect(() => {
-    getCategories();
-  }, []);
-
   const [foodsInfo, setFoodsInfo] = useState<any[]>([]);
 
   useEffect(() => {
@@ -29,12 +17,17 @@ export default function FoodMenu() {
     return foodsInfo;
   };
 
+  const { categories, getCategories } = useCategories();
+  useEffect(() => {
+    getCategories();
+  }, []);
+
   return (
     <div className="bg-[#f4f4f5]  mt-[350px] w-full flex flex-col gap-20 pr-[20px]">
       {categories?.map((item: any, index: any) => {
         return (
           <OneCategoryFoods
-            categories={categories}
+            // categories={categories}
             key={index}
             category={item}
           />

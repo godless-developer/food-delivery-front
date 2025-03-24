@@ -24,7 +24,7 @@ interface FoodsCardProps {
   price: string;
   paragraph: string;
   foodImg: string;
-  categoryName: any[];
+  // categoryName: any[];
   foodId: string;
   getFoodsInfo: any;
 }
@@ -34,7 +34,7 @@ export default function FoodsCard({
   price,
   paragraph,
   foodImg,
-  categoryName,
+  // categoryName,
   foodId,
   getFoodsInfo,
 }: FoodsCardProps) {
@@ -102,13 +102,13 @@ export default function FoodsCard({
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Categories</SelectLabel>
-                    {categoryName?.map((item: any, index: any) => {
+                    {/* {categoryName?.map((item: any, index: any) => {
                       return (
                         <SelectItem value={index} key={index}>
                           {item.categoryName}
                         </SelectItem>
                       );
-                    })}
+                    })} */}
                   </SelectGroup>
                 </SelectContent>
               </Select>

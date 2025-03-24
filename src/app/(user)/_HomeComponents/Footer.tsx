@@ -1,4 +1,12 @@
+"use client";
+import { useCategories } from "@/app/_context/CategoriesContext";
+import { useEffect } from "react";
+
 export default function Footer() {
+  const { categories, getCategories } = useCategories();
+  useEffect(() => {
+    getCategories();
+  }, []);
   return (
     <div className="bg-black w-full h-[775px] flex flex-col items-center justify-start gap-40 py-16">
       <div className="flex gap-10 h-[100px] w-[100vw] justify-center items-center text-[25px] bg-[#ef4444] text-white">
@@ -28,21 +36,17 @@ export default function Footer() {
             MENU
           </h1>
           <div className="flex flex-col gap-2">
-            <p>Appetizers</p>
-            <p>Salads</p>
-            <p>Pizzas</p>
-            <p>Lunch favorites</p>
-            <p>Main dishes</p>
+            {categories.slice(0, 5).map((item: any, index) => {
+              return <p key={index}>{item.categoryName}</p>;
+            })}
           </div>
         </div>
         <div className="flex flex-col gap-5">
           <h1></h1>
           <div className="mt-[25px] flex flex-col gap-2">
-            <p>Side dish</p>
-            <p>Brunch</p>
-            <p>Desserts</p>
-            <p>Beverages</p>
-            <p>Fish & Sea foods</p>
+            {categories.slice(5, 10).map((item: any, index) => {
+              return <p key={index}>{item.categoryName}</p>;
+            })}
           </div>
         </div>
         <div className="flex flex-col gap-5">

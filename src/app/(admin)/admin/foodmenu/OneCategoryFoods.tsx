@@ -1,5 +1,5 @@
 "use client";
-import FoodsCard from "@/app/(user)/_HomeComponents/FoodsCard";
+import FoodsCard from "@/app/(admin)/admin/foodmenu/FoodsCard";
 import { useEffect, useState } from "react";
 import { FoodType } from "@/types";
 import {
@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { ImageIcon, X } from "lucide-react";
+import { useFoodsInfo } from "@/app/_context/FoodContext";
 
 const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!;
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -65,14 +66,13 @@ const formSchema = z.object({
 
 interface AppetizersProps {
   category: any;
-  categories: string[];
+  // categories: string[];
 }
 
 export default function OneCategoryFoods({
   category,
-  categories,
-}: AppetizersProps) {
-  const [foodInfo, setFoodInfo] = useState<any[]>([]);
+}: // categories,
+AppetizersProps) {
   const [value, setValue] = useState("");
   const [file, setFile] = useState<any>(null);
   const [foodImg, setFoodImg] = useState<any>(null);
@@ -89,13 +89,7 @@ export default function OneCategoryFoods({
       setFoodImg(URL.createObjectURL(file));
     }
   };
-
-  const getFoodsInfo = async () => {
-    const data = await fetch("http://localhost:4000/foodsInfo");
-    const jsonData = await data.json();
-    setFoodInfo(jsonData.foodsInfo);
-  };
-
+  const { foodsInfo, getFoodsInfo, setFoodsInfo } = useFoodsInfo();
   useEffect(() => {
     getFoodsInfo();
   }, []);
@@ -119,7 +113,7 @@ export default function OneCategoryFoods({
 
     if (data.ok) {
       const jsonData = await data.json();
-      setFoodInfo((prevCategories) => [...prevCategories, jsonData]);
+      setFoodsInfo((prevCategories: any) => [...prevCategories, jsonData]);
       setValue("");
     } else {
       alert("Failed to add food.");
@@ -303,12 +297,12 @@ export default function OneCategoryFoods({
             </Form>
           </DialogContent>
         </Dialog>
-        {foodInfo
+        {foodsInfo
           .filter((food) => food.category == category._id)
           .map((item: any, index: any) => (
             <FoodsCard
               foodId={item._id}
-              categoryName={categories}
+              // categoryName={categories}
               key={index}
               title={item.foodName}
               price={item.foodPrice}

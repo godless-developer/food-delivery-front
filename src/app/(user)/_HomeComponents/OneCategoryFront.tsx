@@ -1,7 +1,7 @@
 "use client";
 import { useFoodsInfo } from "@/app/_context/FoodContext";
-import { useEffect } from "react";
 import FoodsCartFront from "./FoodsCartFront";
+import { useEffect } from "react";
 interface OneCategoryFrontType {
   catoName: string;
   categoryId: string;

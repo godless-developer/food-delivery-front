@@ -4,6 +4,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { User } from "lucide-react";
+import Link from "next/link";
 
 export function PopoverUser() {
   return (
@@ -17,9 +18,9 @@ export function PopoverUser() {
         <p className="text-[20px] font-semibold text-[#09090B]">
           Test@gmail.com
         </p>
-        <button className="bg-[#f4f4f5]  rounded-full py-2 px-4">
+        <Link href={"./"} className="bg-[#f4f4f5]  rounded-full py-2 px-4">
           Sign out
-        </button>
+        </Link>
       </PopoverContent>
     </Popover>
   );

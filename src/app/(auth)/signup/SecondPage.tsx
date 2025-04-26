@@ -18,13 +18,18 @@ import { useRouter } from "next/navigation";
 interface PageProps {
   currentStep: number;
   setCurrentStep: (step: number) => void;
+  email: string;
 }
 const formSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
   confirmPassword: z.string().min(8, "Password must be at least 8 characters"),
 });
 
-export default function SecondPage({ currentStep, setCurrentStep }: PageProps) {
+export default function SecondPage({
+  currentStep,
+  setCurrentStep,
+  email,
+}: PageProps) {
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -41,6 +46,24 @@ export default function SecondPage({ currentStep, setCurrentStep }: PageProps) {
         });
         return;
       }
+
+      const response = await fetch("http://localhost:4000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: values.password,
+        }),
+      });
+      console.log("Response:", response);
+      console.log(email, values.password);
+
+      if (!response.ok) {
+        throw new Error("Failed to sign up");
+      }
+
       router.push("./login");
     } catch (error) {
       console.error("Error during signup:", error);

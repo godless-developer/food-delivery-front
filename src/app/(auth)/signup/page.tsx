@@ -5,10 +5,23 @@ import SecondPage from "./SecondPage";
 
 export default function SignUp() {
   const [currentStep, setCurrentStep] = useState(0);
-  const FormSteps = [FirstPage, SecondPage][currentStep];
+  const [email, setEmail] = useState(""); // email state нэмнэ!
+
+  const FormSteps = [
+    <FirstPage
+      currentStep={currentStep}
+      setCurrentStep={setCurrentStep}
+      setEmail={setEmail} // дамжуулна
+    />,
+    <SecondPage
+      currentStep={currentStep}
+      setCurrentStep={setCurrentStep}
+      email={email} // дамжуулна
+    />,
+  ];
 
   useEffect(() => {
-    setCurrentStep(Number(0));
+    setCurrentStep(0);
   }, []);
 
   return (
@@ -16,7 +29,7 @@ export default function SignUp() {
       className="w-[50%] cursor-default h-screen flex items-center justify-center"
       key={currentStep}
     >
-      <FormSteps currentStep={currentStep} setCurrentStep={setCurrentStep} />
+      {FormSteps[currentStep]}
     </div>
   );
 }

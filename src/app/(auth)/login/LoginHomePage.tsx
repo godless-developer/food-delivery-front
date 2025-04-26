@@ -22,6 +22,8 @@ const formSchema = z.object({
 });
 
 export default function LoginHomePage() {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,9 +33,23 @@ export default function LoginHomePage() {
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    const router = useRouter();
     try {
-      router.push("./home");
+      const response = await fetch("http://localhost:4000/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+      });
+      if (response.ok) {
+        console.log("Successfully logged in!");
+        router.push("./home");
+      } else {
+        console.error("Login failed", await response.json());
+      }
     } catch (error) {
       console.error("Error during signup:", error);
     }

@@ -14,17 +14,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
 
 interface PageProps {
+  setEmail: (email: string) => void;
   currentStep: number;
   setCurrentStep: (step: number) => void;
 }
 
-export default function FirstPage({ currentStep, setCurrentStep }: PageProps) {
+export default function FirstPage({
+  currentStep,
+  setCurrentStep,
+  setEmail,
+}: PageProps) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,7 +38,8 @@ export default function FirstPage({ currentStep, setCurrentStep }: PageProps) {
     },
   });
 
-  const onSubmit = () => {
+  const onSubmit = (values: { email: string }) => {
+    setEmail(values.email);
     setCurrentStep(currentStep + 1);
   };
 

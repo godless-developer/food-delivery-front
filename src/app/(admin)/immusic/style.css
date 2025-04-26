@@ -1,0 +1,6 @@
+.triangle {
+    width: 200px;
+    aspect-ratio: 1;
+    clip-path: polygon(0 0,100% 100%,0 100%);
+    background: linear-gradient(90deg,red,lightblue);
+  }

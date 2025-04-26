@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import { useCategories } from "@/app/_context/CategoriesContext";
 
 export default function DishesCategory() {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<string | undefined>();
   const [open, setOpen] = useState(false);
 
   const { categories, getCategories } = useCategories();
@@ -38,13 +38,6 @@ export default function DishesCategory() {
       body: JSON.stringify({ categoryName: value }),
     });
 
-    // if (data.ok) {
-    //   const jsonData = await data.json();
-    //   setCategories((prevCategories) => [...prevCategories, jsonData]);
-    //   setValue("");
-    // } else {
-    //   alert("Nemelt amjiltgvi");
-    // }
     getCategories();
   };
 
@@ -60,12 +53,12 @@ export default function DishesCategory() {
   };
 
   const handleAddCategory = () => {
-    if (value.trim() === "") {
+    if (value ?? "".trim() === "") {
       alert("Name oruulna uu");
       return;
     }
     setOpen(false);
-    createCategory(value);
+    createCategory(value ?? "");
   };
 
   return (
@@ -130,7 +123,7 @@ export default function DishesCategory() {
                     id="name"
                     placeholder="Type category name..."
                     className="col-span-3"
-                    value={value}
+                    value={value ?? ""}
                     onChange={(e) => setValue(e.target.value)}
                   />
                 </div>

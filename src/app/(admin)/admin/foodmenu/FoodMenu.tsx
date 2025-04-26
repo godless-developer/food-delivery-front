@@ -4,18 +4,7 @@ import OneCategoryFoods from "./OneCategoryFoods";
 import { useCategories } from "@/app/_context/CategoriesContext";
 
 export default function FoodMenu() {
-  const [foodsInfo, setFoodsInfo] = useState<any[]>([]);
 
-  useEffect(() => {
-    getFoodsInfo();
-  }, []);
-  const getFoodsInfo = async () => {
-    const foodInfo = await fetch(`http://localhost:4000/foodsInfo`);
-    const jsonFoodInfo = await foodInfo.json();
-    console.log(jsonFoodInfo);
-    setFoodsInfo(jsonFoodInfo.foodsInfo);
-    return foodsInfo;
-  };
 
   const { categories, getCategories } = useCategories();
   useEffect(() => {

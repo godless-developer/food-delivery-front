@@ -73,13 +73,19 @@ export default function OneCategoryFoods({
   category,
 }: // categories,
 AppetizersProps) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<undefined | null>(undefined);
   const [file, setFile] = useState<any>(null);
   const [foodImg, setFoodImg] = useState<any>(null);
   const [open, setOpen] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      foodName: "",
+      price: "",
+      ingredients: "",
+      image: "",
+    },
   });
 
   const onFileUpload = (event: any) => {
@@ -114,7 +120,7 @@ AppetizersProps) {
     if (data.ok) {
       const jsonData = await data.json();
       setFoodsInfo((prevCategories: any) => [...prevCategories, jsonData]);
-      setValue("");
+      setValue(null);
     } else {
       alert("Failed to add food.");
     }

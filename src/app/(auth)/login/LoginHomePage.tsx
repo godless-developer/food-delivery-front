@@ -47,6 +47,7 @@ export default function LoginHomePage() {
       if (response.ok) {
         console.log("Successfully logged in!");
         router.push("./home");
+        localStorage.setItem("email", values.email);
       } else {
         console.error("Login failed", await response.json());
       }

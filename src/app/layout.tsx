@@ -5,6 +5,7 @@ import Header from "./(user)/_HomeComponents/Header";
 import OneCategoryFoods from "./(admin)/admin/foodmenu/OneCategoryFoods";
 import { CategoriesProvider } from "./_context/CategoriesContext";
 import { FoodsProvider } from "./_context/FoodContext";
+import OrderProvider from "./_context/OrderContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CategoriesProvider>
-          <FoodsProvider>{children}</FoodsProvider>
-        </CategoriesProvider>
+        <OrderProvider>
+          <CategoriesProvider>
+            <FoodsProvider>{children}</FoodsProvider>
+          </CategoriesProvider>
+        </OrderProvider>
       </body>
     </html>
   );

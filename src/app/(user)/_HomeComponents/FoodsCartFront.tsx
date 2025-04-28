@@ -37,6 +37,9 @@ export default function FoodsCartFront({
   const [file, setFile] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<any>(null);
   const [open, setOpen] = useState(false);
+  const [add, setAdd] = useState(false);
+  const [quantity, setQuantity] = useState<number>(1);
+  const basePrice = parseFloat(price); // анхны үнэ
 
   const onFileUpload = (event: any) => {
     const file = event.target.files[0];
@@ -46,8 +49,18 @@ export default function FoodsCartFront({
     }
   };
 
+  const handleIncrease = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  const handleDecrease = () => {
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  };
+
+  const totalPrice = basePrice * quantity;
+
   return (
-    <div className="w-[291px] h-[261px] border-[2px] bg-white rounded-xl flex flex-col  gap-2 items-center justify-between p-3">
+    <div className="w-[291px] h-[261px] border-[2px] bg-white rounded-xl flex flex-col gap-2 items-center justify-between p-3">
       <div
         className="rounded-xl w-full h-[200px] border-[2px] border-[#ef4444] flex justify-end items-end p-4"
         style={{
@@ -66,7 +79,7 @@ export default function FoodsCartFront({
           <DialogTitle hidden></DialogTitle>
           <DialogContent className="w-[826px] h-[312px] px-6 py-10 flex">
             <div
-              className=" rounded-xl w-1/2 h-[full] border-[2px] border-[#ef4444] "
+              className="rounded-xl w-1/2 h-full border-[2px] border-[#ef4444]"
               style={{
                 backgroundImage: `url("${imgUrl}")`,
                 backgroundRepeat: "no-repeat",
@@ -88,10 +101,14 @@ export default function FoodsCartFront({
                   <div>
                     <p>Total price</p>
                     <p className="text-[18px] font-semibold normal text-[#ef4444]">
-                      ${price}
+                      ${totalPrice.toFixed(2)}
                     </p>
                   </div>
-                  <div>- 1 +</div>
+                  <div className="flex gap-2 items-center">
+                    <button onClick={handleDecrease}>-</button>
+                    <p>{quantity}</p>
+                    <button onClick={handleIncrease}>+</button>
+                  </div>
                 </div>
                 <button className="w-full bg-black text-white rounded-lg h-[40px]">
                   Add to cart
@@ -106,11 +123,10 @@ export default function FoodsCartFront({
           <h1 className="text-[18px] font-semibold normal text-[#ef4444]">
             {title}
           </h1>
-          <h1 className="text-[18px] font-semibold normal">{price}</h1>
+          <h1 className="text-[18px] font-semibold normal">${price}</h1>
         </div>
-        <p className="text-[14px] text-black font-normal">{paragraph} </p>
+        <p className="text-[14px] text-black font-normal">{paragraph}</p>
       </div>
     </div>
   );
 }
-// url("./file.svg");
